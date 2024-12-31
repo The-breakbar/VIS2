@@ -1,5 +1,6 @@
 import { LooseObject } from '../interfaces';
-const fs = require('fs');
+
+import { readFileSync } from 'fs';
 
 const suitableHeaders = {
     id: ['id', 'userid'],
@@ -9,7 +10,7 @@ const suitableHeaders = {
 };
 
 export function readCSVasJSON(filePath: string): Object[] {
-    const fileContent = fs.readFileSync(filePath, 'utf8');
+    const fileContent = readFileSync(filePath, 'utf8');
     const rows = fileContent.split('\n');
     const headers = rows[0].split(',');
     const data = rows.slice(1).map((row: string) => {

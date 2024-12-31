@@ -48,3 +48,61 @@ export interface Grid {
     gridSizeX: number;
     gridSizeY: number;
 }
+
+export interface VoronoiCell {
+    center: Point;
+    entryPoint: Point;
+    exitPoint: Point;
+}
+
+export interface Visit {
+    cell: VoronoiCell;
+    tStart: Date;
+    tEnd: Date;
+    duration?: number;
+    distance?: number;
+    avgSpeed?: number;
+}
+
+export interface Move {
+    from: VoronoiCell;
+    to: VoronoiCell;
+    tZero: Date;
+    tFin: Date;
+    duration?: number;
+    distance?: number;
+    avgSpeed?: number;
+}
+
+export interface TrajectoryAdvanced {
+    original: Trajectory;
+    seqOfCell: VoronoiCell[];
+    visits: Visit[];
+    moves: Move[];
+}
+
+export interface VoronoiCellStatistics {
+    cell: VoronoiCell;
+    visits: Visit[];
+    durationStats?: StatisticInterface;
+    distanceStats?: StatisticInterface;
+    avgSpeedStats?: StatisticInterface;
+}
+
+export interface VoronoiCellPairStatistics {
+    from: VoronoiCellStatistics;
+    to: VoronoiCellStatistics;
+    moves: Move[];
+    durationStats?: StatisticInterface;
+    distanceStats?: StatisticInterface;
+    avgSpeedStats?: StatisticInterface;
+}
+
+export interface StatisticInterface {
+    mean: number;
+    median: number;
+    variance: number;
+    stdDev: number;
+    min: number;
+    max: number;
+}

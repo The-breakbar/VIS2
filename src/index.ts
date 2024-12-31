@@ -6,6 +6,9 @@ import {
     groupingCharacteristicPointsInSpace,
     optimizeGroupsInRespectToPointDensity,
 } from './space_tesselation/groupCharacteristicPoints';
+import { getVoronoiPoints } from './space_tesselation/voronoiPointsCreation';
+import { segmentTrajectories } from './space_tesselation/dividingTrajectoriesIntoSegments';
+import { aggregateMoves, aggregateVisits } from './space_tesselation/aggregationOfData';
 import { extractMovementIntoOneArray, movementToPoints } from './tools';
 
 // Declare the chart dimensions and margins.
@@ -45,12 +48,40 @@ document.body.appendChild(svg.node() as Node);
 // Load the CSV file and compute the data.
 function loadAndComputeCSV(filePath: string) {
     const csv = readCSVasJSON(filePath);
+    // -----
+
     const trajectories = createTrajectoriesFromCSV(csv);
+    // -----
+
     const characteristicPoints = extractCharisticPointsFromAllTrajectories(trajectories);
+
+    // -----
+
     const movements = extractMovementIntoOneArray(characteristicPoints);
     const points = movementToPoints(movements);
+
+    // ----- Grouping Characteristic Points in Space
+
     const groupedOutput = groupingCharacteristicPointsInSpace(points, 0.0001);
     const Groups = groupedOutput[0];
     const Grid = groupedOutput[1];
+
+    // ----- Grouping Characteristic Points in Space - Optimization
+
     const optimizedGroups = optimizeGroupsInRespectToPointDensity(points, Groups, Grid);
+
+    // ----- Partitioning the Territory
+
+    const voronoiPoints = getVoronoiPoints(optimizedGroups, Grid);
+
+    // ----- Dividing Trajectories into Segments
+
+    const segmentedTrajectories = segmentTrajectories(Object.values(trajectories), voronoiPoints);
+
+    // ----- Aggregation of data
+
+    const aggregatedVisits = aggregateVisits(segmentedTrajectories, voronoiPoints);
+    const aggregatedMoves = aggregateMoves(segmentedTrajectories, voronoiPoints, aggregatedVisits);
+
+    // -----
 }

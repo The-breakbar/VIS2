@@ -6,6 +6,10 @@ export function movementToPoints(movements: Movement[]): Point[] {
     });
 }
 
+export function movementToPoint(movement: Movement): Point {
+    return { x: movement.lat, y: movement.lon };
+}
+
 export function extractMovementIntoOneArray(characteristicPoints: Record<string, Movement[]>): Movement[] {
     let movements: Movement[] = [];
     for (const key in characteristicPoints) {

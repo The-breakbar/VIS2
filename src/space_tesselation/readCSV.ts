@@ -8,28 +8,33 @@ const suitableHeaders = {
 };
 
 export async function readCSVasJSON(filePath: string): Promise<Object[]> {
-	const fileContent = await fetch(filePath).then((response) =>
-		response.text()
-	);
-	console.log(fileContent);
+	const fileContent = await fetch(filePath).then((response) => response.text());
+	// console.log(fileContent);
 
 	const rows = fileContent.split('\n');
 	const headers = rows[0].split(',');
 	const data = rows.slice(1).map((row: string) => {
 		const values = row.split(',');
 		const obj: LooseObject = {};
+		console.clear();
 		headers.forEach((header: string, index: number) => {
+			if (!values[index]) {
+				console.log(values);
+				throw new Error('No value');
+			}
+
 			let currVal = values[index].replace(/["\r]/g, '');
-			if (suitableHeaders.id.includes(header)) {
+			let currHeader = header.replace(/["\r]/g, '');
+			if (suitableHeaders.id.includes(currHeader)) {
 				obj.id = currVal;
-			} else if (suitableHeaders.datetime.includes(header)) {
+			} else if (suitableHeaders.datetime.includes(currHeader)) {
 				obj.datetime = currVal;
-			} else if (suitableHeaders.lat.includes(header)) {
+			} else if (suitableHeaders.lat.includes(currHeader)) {
 				obj.lat = currVal;
-			} else if (suitableHeaders.lon.includes(header)) {
+			} else if (suitableHeaders.lon.includes(currHeader)) {
 				obj.lon = currVal;
 			} else {
-				obj[header] = currVal;
+				obj[currHeader] = currVal;
 			}
 		});
 		return obj;

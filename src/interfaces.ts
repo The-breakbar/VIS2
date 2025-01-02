@@ -1,108 +1,108 @@
 export interface LooseObject {
-    [key: string]: any;
+	[key: string]: any;
 }
 
 export interface Movement {
-    lat: number;
-    lon: number;
-    datetime: Date;
+	lat: number;
+	lon: number;
+	datetime: Date;
 }
 export interface Trajectory {
-    id: string;
-    movements: Movement[];
+	id: string;
+	movements: Movement[];
 }
 
 export interface CharacteristicPointParams {
-    minAngle: number; //the minimum angle between the directions of consecutive trajectory segments to be considered as a significant turn;
-    minStopDuration: number; // the minimum time spent in approximately the same position to be treated as a significant stop;
-    minDistance: number; // when the distance between two consecutive points is below this value, the points are treated as approximately the same position;
-    maxDistance: number; // the maximum allowed distance between consecutive characteristic points extracted from the trajectory (i.e., if the trajectory has a straight segment with the length more than this value, representative points must be taken such that the distances between them do not exceed this value).}
+	minAngle: number; //the minimum angle between the directions of consecutive trajectory segments to be considered as a significant turn;
+	minStopDuration: number; // the minimum time spent in approximately the same position to be treated as a significant stop;
+	minDistance: number; // when the distance between two consecutive points is below this value, the points are treated as approximately the same position;
+	maxDistance: number; // the maximum allowed distance between consecutive characteristic points extracted from the trajectory (i.e., if the trajectory has a straight segment with the length more than this value, representative points must be taken such that the distances between them do not exceed this value).}
 }
 
 export interface Point {
-    x: number;
-    y: number;
+	x: number;
+	y: number;
 }
 
 export interface BoundingBox {
-    min: Point;
-    max: Point;
+	min: Point;
+	max: Point;
 }
 
 export interface Group {
-    members: Point[];
-    center: Point;
-    meanDist: number;
-    density: number;
-    medianPoint: Point;
+	members: Point[];
+	center: Point;
+	meanDist: number;
+	density: number;
+	medianPoint: Point;
 }
 
 export interface GridCell {
-    value: Point | undefined;
+	value: Point | null;
 }
 
 export interface Grid {
-    boundingBox: BoundingBox;
-    cellSize: number;
-    grid: GridCell[][];
-    gridSizeX: number;
-    gridSizeY: number;
+	boundingBox: BoundingBox;
+	cellSize: number;
+	grid: GridCell[][];
+	gridSizeX: number;
+	gridSizeY: number;
 }
 
 export interface VoronoiCell {
-    center: Point;
-    entryPoint: Point;
-    exitPoint: Point;
+	center: Point;
+	entryPoint: Point;
+	exitPoint: Point;
 }
 
 export interface Visit {
-    cell: VoronoiCell;
-    tStart: Date;
-    tEnd: Date;
-    duration?: number;
-    distance?: number;
-    avgSpeed?: number;
+	cell: VoronoiCell;
+	tStart: Date;
+	tEnd: Date;
+	duration?: number;
+	distance?: number;
+	avgSpeed?: number;
 }
 
 export interface Move {
-    from: VoronoiCell;
-    to: VoronoiCell;
-    tZero: Date;
-    tFin: Date;
-    duration?: number;
-    distance?: number;
-    avgSpeed?: number;
+	from: VoronoiCell;
+	to: VoronoiCell;
+	tZero: Date;
+	tFin: Date;
+	duration?: number;
+	distance?: number;
+	avgSpeed?: number;
 }
 
 export interface TrajectoryAdvanced {
-    original: Trajectory;
-    seqOfCell: VoronoiCell[];
-    visits: Visit[];
-    moves: Move[];
+	original: Trajectory;
+	seqOfCell: VoronoiCell[];
+	visits: Visit[];
+	moves: Move[];
 }
 
 export interface VoronoiCellStatistics {
-    cell: VoronoiCell;
-    visits: Visit[];
-    durationStats?: StatisticInterface;
-    distanceStats?: StatisticInterface;
-    avgSpeedStats?: StatisticInterface;
+	cell: VoronoiCell;
+	visits: Visit[];
+	durationStats?: StatisticInterface;
+	distanceStats?: StatisticInterface;
+	avgSpeedStats?: StatisticInterface;
 }
 
 export interface VoronoiCellPairStatistics {
-    from: VoronoiCellStatistics;
-    to: VoronoiCellStatistics;
-    moves: Move[];
-    durationStats?: StatisticInterface;
-    distanceStats?: StatisticInterface;
-    avgSpeedStats?: StatisticInterface;
+	from: VoronoiCellStatistics;
+	to: VoronoiCellStatistics;
+	moves: Move[];
+	durationStats?: StatisticInterface;
+	distanceStats?: StatisticInterface;
+	avgSpeedStats?: StatisticInterface;
 }
 
 export interface StatisticInterface {
-    mean: number;
-    median: number;
-    variance: number;
-    stdDev: number;
-    min: number;
-    max: number;
+	mean: number;
+	median: number;
+	variance: number;
+	stdDev: number;
+	min: number;
+	max: number;
 }

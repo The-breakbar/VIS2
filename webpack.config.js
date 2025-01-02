@@ -1,11 +1,12 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
 	mode: 'development',
 	entry: './src/index.ts',
-	devtool: 'inline-source-map',
+	devtool: 'source-map',
 	module: {
 		rules: [
 			{
@@ -19,6 +20,9 @@ module.exports = {
 			}
 		]
 	},
+	devServer: {
+		static: './dist'
+	},
 	resolve: {
 		extensions: ['.tsx', '.ts', '.js']
 	},
@@ -28,6 +32,11 @@ module.exports = {
 		}),
 		new CopyPlugin({
 			patterns: [{ from: 'data', to: 'data' }]
+		}),
+		new webpack.SourceMapDevToolPlugin({
+			filename: '[file].map',
+			fallbackModuleFilenameTemplate: '[absolute-resource-path]',
+			moduleFilenameTemplate: '[absolute-resource-path]'
 		})
 	],
 	output: {

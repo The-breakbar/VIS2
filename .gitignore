@@ -1,4 +1,6 @@
 dist
-.vscode
 node_modules
 data/output.json
+
+.vscode/*
+!.vscode/template.json

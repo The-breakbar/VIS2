@@ -6,6 +6,7 @@ export interface Movement {
 	lat: number;
 	lon: number;
 	datetime: Date;
+	pointCreatedFromMovement?: Point;
 }
 export interface Trajectory {
 	id: string;
@@ -113,4 +114,11 @@ export interface StatisticInterface {
 	stdDev: number;
 	min: number;
 	max: number;
+}
+
+export interface SpaceTesselation {
+	voronoiPoints: VoronoiCell[];
+	aggregatedVisits: VoronoiCellStatistics[];
+	aggregatedMoves: VoronoiCellPairStatistics[];
+	segementedTrajectories: TrajectoryAdvanced[];
 }

@@ -1,7 +1,37 @@
 import { Point, Group, Grid, GridCell, BoundingBox, Movement } from '../interfaces';
 
 export function spatialDistance(p1: Point, p2: Point): number {
-	return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+	// return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+
+	let lat1 = p1.x;
+	let lon1 = p1.y;
+	let lat2 = p2.x;
+	let lon2 = p2.y;
+
+	if (lat1 == lat2 && lon1 == lon2) {
+		return 0;
+	}
+
+	let R = 6378.137; // Radius of earth in KM
+	let dLat = (lat2 * Math.PI) / 180 - (lat1 * Math.PI) / 180;
+	let dLon = (lon2 * Math.PI) / 180 - (lon1 * Math.PI) / 180;
+	let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+	let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+	let d = R * c;
+	return Math.abs(d * 1000);
+}
+
+function convertLatLonToMeters(p: Point): Point {
+	const earthRadius = 6378.137; // Radius of earth in KM
+	const degToRad = (deg: number) => (deg * Math.PI) / 180;
+
+	const lat = p.x;
+	const lon = p.y;
+
+	const x = earthRadius * degToRad(lat) * 1000; // Convert to meters
+	const y = earthRadius * Math.cos(degToRad(lat)) * degToRad(lon) * 1000; // Convert to meters
+
+	return { x: Math.abs(x), y: Math.abs(y) } as Point;
 }
 
 function computeAverage(points: Point[]): Point {
@@ -76,8 +106,10 @@ function getClosestCentroid(point: Point, grid: Grid): Point | null {
 }
 
 function getGridPosition(point: Point, grid: Grid): Point {
-	let x = Math.floor((point.x - grid.boundingBox.min.x) / grid.cellSize);
-	let y = Math.floor((point.y - grid.boundingBox.min.y) / grid.cellSize);
+	let p = convertLatLonToMeters(point);
+	let bb = convertLatLonToMeters(grid.boundingBox.min);
+	let x = Math.floor(Math.abs(p.x - bb.x) / grid.cellSize);
+	let y = Math.floor(Math.abs(p.y - bb.y) / grid.cellSize);
 	return { x, y } as Point;
 }
 
@@ -94,6 +126,7 @@ function redistributePoints(points: Point[], set: Group[], grid: Grid) {
 	}
 }
 
+//maxRadius in meters
 export function groupingCharacteristicPointsInSpace(points: Point[], maxRadius: number): any {
 	let bb: BoundingBox = { min: { x: points[0].x, y: points[0].y }, max: { x: points[0].x, y: points[0].y } };
 	for (let i = 0; i < points.length; i++) {
@@ -110,8 +143,19 @@ export function groupingCharacteristicPointsInSpace(points: Point[], maxRadius: 
 		}
 	}
 
-	let gridSizeX = Math.ceil((bb.max.x - bb.min.x) / maxRadius);
-	let gridSizeY = Math.ceil((bb.max.y - bb.min.y) / maxRadius);
+	// Convert bounding box to meters
+	const earthRadius = 6378.137; // Radius of earth in KM
+	const degToRad = (deg: number) => (deg * Math.PI) / 180;
+
+	const latDiff = bb.max.x - bb.min.x;
+	const lonDiff = bb.max.y - bb.min.y;
+
+	const latDist = earthRadius * degToRad(latDiff) * 1000; // Convert to meters
+	const lonDist = earthRadius * Math.cos(degToRad(bb.min.x)) * degToRad(lonDiff) * 1000; // Convert to meters
+
+	// Calculate grid size in meters
+	const gridSizeX = Math.ceil(latDist / maxRadius);
+	const gridSizeY = Math.ceil(lonDist / maxRadius);
 
 	console.log(bb);
 	console.log(gridSizeX, gridSizeY);

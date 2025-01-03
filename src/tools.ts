@@ -2,7 +2,9 @@ import { Movement, Point } from './interfaces';
 
 export function movementToPoints(movements: Movement[]): Point[] {
 	return movements.map((movement) => {
-		return { x: movement.lat, y: movement.lon };
+		let point: Point = { x: movement.lat, y: movement.lon };
+		movement.pointCreatedFromMovement = point;
+		return point;
 	});
 }
 

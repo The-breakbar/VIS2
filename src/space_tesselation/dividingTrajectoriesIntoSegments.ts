@@ -2,30 +2,8 @@ import { Trajectory, VoronoiCell, Visit, Move, TrajectoryAdvanced, Point } from 
 import { spatialDistance } from './groupCharacteristicPoints';
 import { movementToPoint } from '../tools';
 
-import SegmentWorker from 'worker-loader!./dividTrajIntoSeg.worker.ts';
-
-export async function segmentTrajectoriesParallel(trajectories: Trajectory[], voronoiCells: VoronoiCell[]): TrajectoryAdvanced[] {
-	let segmentTrajectories: TrajectoryAdvanced[] = [];
-	var promises = [];
-
-	for (let i = 0; i < trajectories.length; i += 2000) {
-		const max = Math.min(i + 2000, trajectories.length);
-		const subTrajectories = trajectories.slice(i, max);
-		promises.push(createWorker(subTrajectories, voronoiCells));
-	}
-
-	let tmp = await Promise.all(promises);
-
-	for (const trajectory of tmp) {
-		segmentTrajectories = segmentTrajectories.concat(trajectory);
-	}
-
-	return segmentTrajectories;
-}
-
 export function segmentTrajectories(trajectories: Trajectory[], voronoiCells: VoronoiCell[]): TrajectoryAdvanced[] {
 	const segmentedTrajectories: TrajectoryAdvanced[] = [];
-
 	for (const trajectory of trajectories) {
 		segmentedTrajectories.push(segmentTrajectory(trajectory, voronoiCells));
 	}
@@ -36,18 +14,8 @@ export function segmentTrajectories(trajectories: Trajectory[], voronoiCells: Vo
 	return segmentedTrajectories;
 }
 
-function createWorker(trajectory: Trajectory[], voronoiCells: VoronoiCell[]): Promise<TrajectoryAdvanced> {
-	return new Promise((resolve, reject) => {
-		const worker = new SegmentWorker();
-		worker.postMessage({ trajectory: trajectory, voronoiCells: voronoiCells });
-		worker.onmessage = (e: MessageEvent) => {
-			resolve(e.data.segTraj);
-		};
-	});
-}
-
 //TODO: Optimize closestCell Finding
-export function segmentTrajectory(trajectory: Trajectory, voronoiCells: VoronoiCell[]): TrajectoryAdvanced {
+function segmentTrajectory(trajectory: Trajectory, voronoiCells: VoronoiCell[]): TrajectoryAdvanced {
 	const visits: Visit[] = [];
 	const moves: Move[] = [];
 	const seqOfCell: VoronoiCell[] = [];

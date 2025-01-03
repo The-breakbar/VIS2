@@ -9,6 +9,7 @@ module.exports = {
 	devtool: 'source-map',
 	module: {
 		rules: [
+			//For TypeScript
 			{
 				test: /\.tsx?$/,
 				use: 'ts-loader',
@@ -17,6 +18,11 @@ module.exports = {
 			{
 				test: /\.csv$/,
 				use: 'asset/resource'
+			},
+			//For Web workers
+			{
+				test: /\.worker\.js$/,
+				use: { loader: 'worker-loader' }
 			}
 		]
 	},

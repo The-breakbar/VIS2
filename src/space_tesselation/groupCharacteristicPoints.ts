@@ -20,17 +20,19 @@ function putInProperGroup(point: Point, set: Group[], grid: Grid) {
 	let c = getClosestCentroid(point, grid);
 	let newCenter;
 	if (c == null) {
-		let newGroup: Group = { members: [point], center: point, meanDist: -1, density: -1, medianPoint: { x: -1, y: -1 } };
+		let newGroup: Group = { id: set.length, members: [point], center: point, meanDist: -1, density: -1, medianPoint: { x: -1, y: -1 } };
 		set.push(newGroup);
 		newCenter = point;
+		newCenter.groupId = set.length - 1;
 	} else {
-		let currGroup: Group = set.filter((group) => group.center == c)[0];
+		// let currGroup: Group = set.filter((group) => group.center == c)[0];
+		let currGroup = set[c.groupId as number];
 		currGroup.members.push(point);
 		let tmp = getGridPosition(c, grid);
 		grid.grid[tmp.x][tmp.y].value = undefined;
-		// grid.grid.filter((row) => row.filter((cell) => cell.value == c))[0][0].value = undefined;
 		newCenter = computeAverage(currGroup.members);
 		currGroup.center = newCenter;
+		currGroup.center.groupId = c.groupId;
 	}
 
 	let gridPos = getGridPosition(newCenter, grid);
@@ -87,7 +89,7 @@ function redistributePoints(points: Point[], set: Group[], grid: Grid) {
 		if (c == null) {
 			continue;
 		}
-		let currGroup = set.filter((group) => group.center == c)[0];
+		let currGroup = set[c.groupId as number];
 		currGroup.members.push(p);
 	}
 }
@@ -176,10 +178,13 @@ export function optimizeGroupsInRespectToPointDensity(points: Point[], groups: G
 	let orderdGroupsByDensity = groups.sort((a, b) => b.density - a.density);
 
 	let newGroups: Group[] = [];
-
+	let counter = 0;
 	for (let i = 0; i < groups.length; i++) {
 		const currGroup = groups[i];
-		if (currGroup.members.length <= 2) continue;
+		if (currGroup.members.length == 0) {
+			continue;
+		}
+
 		if (groups[i].density < mDens) {
 			break;
 		}
@@ -193,16 +198,21 @@ export function optimizeGroupsInRespectToPointDensity(points: Point[], groups: G
 				pMed = c;
 			}
 		}
+		pMed.groupId = counter;
 
-		let newGroup: Group = { members: [], center: pMed, meanDist: -1, density: -1, medianPoint: { x: -1, y: -1 } };
+		let newGroup: Group = { id: counter, members: [], center: pMed, meanDist: -1, density: -1, medianPoint: { x: -1, y: -1 } };
 		newGroups.push(newGroup);
 
 		let gridPos = getGridPosition(pMed, grid);
 		grid.grid[gridPos.x][gridPos.y].value = pMed;
+		counter++;
 	}
 
-	for (let i = 0; i < newGroups.length; i++) {
+	for (let i = 0; i < orderdGroupsByDensity.length; i++) {
 		let g = orderdGroupsByDensity[i];
+		if (typeof g.members === 'undefined' || g.members.length == 0) {
+			continue;
+		}
 		for (let p of g.members) {
 			putInProperGroup(p, newGroups, grid);
 		}

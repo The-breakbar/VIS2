@@ -4,3 +4,4 @@ data/output.json
 
 .vscode/*
 !.vscode/template.json
+*.cpuprofile

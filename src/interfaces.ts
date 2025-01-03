@@ -22,6 +22,7 @@ export interface CharacteristicPointParams {
 export interface Point {
 	x: number;
 	y: number;
+	groupId?: number;
 }
 
 export interface BoundingBox {
@@ -30,6 +31,7 @@ export interface BoundingBox {
 }
 
 export interface Group {
+	id: number;
 	members: Point[];
 	center: Point;
 	meanDist: number;

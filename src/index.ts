@@ -68,4 +68,4 @@ async function loadAndComputeCSV(filePath: string) {
 	// -----
 }
 
-loadAndComputeCSV('./data/MilanoData.csv');
+loadAndComputeCSV('./data/SmallMilanoData.csv');

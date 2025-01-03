@@ -1,7 +1,23 @@
 import { Movement, Trajectory, CharacteristicPointParams } from '../interfaces';
 
 function spatialDistance(p1: Movement, p2: Movement): number {
-	return Math.sqrt(Math.pow(p1.lat - p2.lat, 2) + Math.pow(p1.lon - p2.lon, 2));
+	// return Math.sqrt(Math.pow(p1.lat - p2.lat, 2) + Math.pow(p1.lon - p2.lon, 2));
+	let lat1 = p1.lat;
+	let lon1 = p1.lon;
+	let lat2 = p2.lat;
+	let lon2 = p2.lon;
+
+	if (lat1 == lat2 && lon1 == lon2) {
+		return 0;
+	}
+
+	let R = 6378.137; // Radius of earth in KM
+	let dLat = (lat2 * Math.PI) / 180 - (lat1 * Math.PI) / 180;
+	let dLon = (lon2 * Math.PI) / 180 - (lon1 * Math.PI) / 180;
+	let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+	let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+	let d = R * c;
+	return d * 1000;
 }
 
 function temporalDistance(p1: Movement, p2: Movement): number {
@@ -109,10 +125,10 @@ function extractCharacteristicPointsOfATrajectory(trajectory: Trajectory, params
 export function extractCharisticPointsFromAllTrajectories(trajectories: Map<string, Trajectory>): Map<string, Movement[]> {
 	const characteristicPoints = new Map<string, Movement[]>();
 	const params: CharacteristicPointParams = {
-		minAngle: 0.1,
-		minStopDuration: 1000,
-		minDistance: 0.0001,
-		maxDistance: 0.0001
+		minAngle: 30, //Degrees
+		minStopDuration: 300 * 1000, //Seconds times milliseconds
+		minDistance: 250, //Meters
+		maxDistance: 2500 //Meters
 	};
 	//TODO: FIX adjust params
 	for (const [key] of trajectories) {

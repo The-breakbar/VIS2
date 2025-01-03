@@ -16,7 +16,6 @@ export async function readCSVasJSON(filePath: string): Promise<Object[]> {
 	const data = rows.slice(1).map((row: string) => {
 		const values = row.split(',');
 		const obj: LooseObject = {};
-		console.clear();
 		headers.forEach((header: string, index: number) => {
 			if (!values[index]) {
 				console.log(values);

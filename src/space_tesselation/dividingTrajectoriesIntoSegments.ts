@@ -4,7 +4,7 @@ import { movementToPoint } from '../tools';
 
 import SegmentWorker from 'worker-loader!./dividTrajIntoSeg.worker.ts';
 
-export async function segmentTrajectoriesParallel(trajectories: Trajectory[], voronoiCells: VoronoiCell[]): Promise<TrajectoryAdvanced[]> {
+export async function segmentTrajectoriesParallel(trajectories: Trajectory[], voronoiCells: VoronoiCell[]): TrajectoryAdvanced[] {
 	let segmentTrajectories: TrajectoryAdvanced[] = [];
 	var promises = [];
 

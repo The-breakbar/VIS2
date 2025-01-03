@@ -38,7 +38,11 @@ export interface Group {
 }
 
 export interface GridCell {
-	value: Point | null;
+	value: Point | undefined;
+}
+
+export interface NoPoint {
+	noPoint: true;
 }
 
 export interface Grid {

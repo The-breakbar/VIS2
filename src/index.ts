@@ -36,7 +36,7 @@ async function loadAndComputeCSV(filePath: string) {
 	console.log('Movements and points extracted');
 	// ----- Grouping Characteristic Points in Space
 
-	const groupedOutput = groupingCharacteristicPointsInSpace(points, 0.0001);
+	const groupedOutput = groupingCharacteristicPointsInSpace(points, 0.001);
 	const Groups = groupedOutput[0];
 	const Grid = groupedOutput[1];
 	console.log(`Groups: ${Groups.length}`);

@@ -4,7 +4,7 @@ export function spatialDistance(p1: Point, p2: Point): number {
 	return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
 }
 
-function ComputeAverage(points: Point[]): Point {
+function computeAverage(points: Point[]): Point {
 	let x = 0;
 	let y = 0;
 	for (let p of points) {
@@ -13,7 +13,7 @@ function ComputeAverage(points: Point[]): Point {
 	}
 	x /= points.length;
 	y /= points.length;
-	return { x, y };
+	return { x, y } as Point;
 }
 
 function putInProperGroup(point: Point, set: Group[], grid: Grid) {
@@ -26,8 +26,10 @@ function putInProperGroup(point: Point, set: Group[], grid: Grid) {
 	} else {
 		let currGroup: Group = set.filter((group) => group.center == c)[0];
 		currGroup.members.push(point);
-		grid.grid.filter((row) => row.filter((cell) => cell.value == c))[0][0].value = null;
-		newCenter = ComputeAverage(currGroup.members);
+		let tmp = getGridPosition(c, grid);
+		grid.grid[tmp.x][tmp.y].value = undefined;
+		// grid.grid.filter((row) => row.filter((cell) => cell.value == c))[0][0].value = undefined;
+		newCenter = computeAverage(currGroup.members);
 		currGroup.center = newCenter;
 	}
 
@@ -42,9 +44,9 @@ function getClosestCentroid(point: Point, grid: Grid): Point | null {
 
 	let C: Point[] = [];
 
-	for (let k = Math.max(i - 1, 1); Math.min(i + 1, grid.gridSizeX); k++) {
-		for (let m = Math.max(j - 1, 1); Math.min(j + 1, grid.gridSizeY); m++) {
-			if (grid.grid[k][m].value == null) {
+	for (let k = Math.max(i - 1, 1); k < Math.min(i + 1, grid.gridSizeX); k++) {
+		for (let m = Math.max(j - 1, 1); m < Math.min(j + 1, grid.gridSizeY); m++) {
+			if (typeof grid.grid[k][m].value === 'undefined') {
 				continue;
 			}
 			if (spatialDistance(point, grid.grid[k][m].value as Point) <= grid.cellSize) {
@@ -74,18 +76,17 @@ function getClosestCentroid(point: Point, grid: Grid): Point | null {
 function getGridPosition(point: Point, grid: Grid): Point {
 	let x = Math.floor((point.x - grid.boundingBox.min.x) / grid.cellSize);
 	let y = Math.floor((point.y - grid.boundingBox.min.y) / grid.cellSize);
-	return { x, y };
+	return { x, y } as Point;
 }
 
 function redistributePoints(points: Point[], set: Group[], grid: Grid) {
-	grid.grid.forEach((row) => {
-		row.forEach((cell) => {
-			cell.value = null;
-		});
-	});
+	set.forEach((group) => (group.members = []));
 
 	for (let p of points) {
 		let c = getClosestCentroid(p, grid);
+		if (c == null) {
+			continue;
+		}
 		let currGroup = set.filter((group) => group.center == c)[0];
 		currGroup.members.push(p);
 	}
@@ -117,13 +118,9 @@ export function groupingCharacteristicPointsInSpace(points: Point[], maxRadius: 
 	for (let i = 0; i < gridSizeX; i++) {
 		gridcells[i] = [];
 		for (let j = 0; j < gridSizeY; j++) {
-			gridcells[i][j] = { value: null };
+			gridcells[i][j] = { value: undefined };
 		}
 	}
-
-	gridcells[0][0].value = { x: -1, y: -1 };
-
-	console.log(gridcells);
 
 	let R: Group[] = [];
 
@@ -160,7 +157,7 @@ function getMeanDistance(points: Point[], center: Point): number {
 export function optimizeGroupsInRespectToPointDensity(points: Point[], groups: Group[], grid: Grid) {
 	for (let i = 0; i < grid.grid.length; i++) {
 		for (let j = 0; j < grid.grid[0].length; j++) {
-			grid.grid[i][j] = { value: null };
+			grid.grid[i][j] = { value: undefined };
 		}
 	}
 
@@ -182,10 +179,11 @@ export function optimizeGroupsInRespectToPointDensity(points: Point[], groups: G
 
 	for (let i = 0; i < groups.length; i++) {
 		const currGroup = groups[i];
+		if (currGroup.members.length <= 2) continue;
 		if (groups[i].density < mDens) {
 			break;
 		}
-
+		console.log(currGroup);
 		let minDist = spatialDistance(currGroup.members[0], currGroup.medianPoint);
 		let pMed = currGroup.members[0];
 		for (let c of currGroup.members) {
@@ -203,7 +201,7 @@ export function optimizeGroupsInRespectToPointDensity(points: Point[], groups: G
 		grid.grid[gridPos.x][gridPos.y].value = pMed;
 	}
 
-	for (let i = 0; i < groups.length; i++) {
+	for (let i = 0; i < newGroups.length; i++) {
 		let g = orderdGroupsByDensity[i];
 		for (let p of g.members) {
 			putInProperGroup(p, newGroups, grid);

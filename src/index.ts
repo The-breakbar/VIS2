@@ -4,7 +4,7 @@ import { createTrajectoriesFromCSV } from './space_tesselation/trajectories';
 import { extractCharisticPointsFromAllTrajectories } from './space_tesselation/characteristicPoints';
 import { groupingCharacteristicPointsInSpace, optimizeGroupsInRespectToPointDensity } from './space_tesselation/groupCharacteristicPoints';
 import { getVoronoiPoints } from './space_tesselation/voronoiPointsCreation';
-import { segmentTrajectories } from './space_tesselation/dividingTrajectoriesIntoSegments';
+import { segmentTrajectories, segmentTrajectoriesParallel } from './space_tesselation/dividingTrajectoriesIntoSegments';
 import { aggregateMoves, aggregateVisits } from './space_tesselation/aggregationOfData';
 import { extractMovementIntoOneArray, movementToPoints } from './tools';
 
@@ -55,7 +55,7 @@ async function loadAndComputeCSV(filePath: string) {
 	console.log('Voronoi points created');
 	// ----- Dividing Trajectories into Segments
 
-	const segmentedTrajectories = segmentTrajectories([...trajectories.values()], voronoiPoints);
+	const segmentedTrajectories = await segmentTrajectoriesParallel([...trajectories.values()], voronoiPoints);
 	console.log(`Segmented trajectories: ${segmentedTrajectories.length}`);
 	console.log('Trajectories segmented');
 	// ----- Aggregation of data

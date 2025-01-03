@@ -183,7 +183,7 @@ export function optimizeGroupsInRespectToPointDensity(points: Point[], groups: G
 		if (groups[i].density < mDens) {
 			break;
 		}
-		console.log(currGroup);
+		// console.log(currGroup);
 		let minDist = spatialDistance(currGroup.members[0], currGroup.medianPoint);
 		let pMed = currGroup.members[0];
 		for (let c of currGroup.members) {

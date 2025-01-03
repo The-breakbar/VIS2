@@ -54,7 +54,9 @@ export interface Grid {
 }
 
 export interface VoronoiCell {
+	id: number;
 	center: Point;
+	points: Point[];
 	entryPoint: Point;
 	exitPoint: Point;
 }

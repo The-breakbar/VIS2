@@ -36,6 +36,7 @@ async function loadAndComputeCSV(filePath: string) {
 	console.log('Movements and points extracted');
 	// ----- Grouping Characteristic Points in Space
 
+	//TODO: Takes a long time maybe optimize code
 	const groupedOutput = groupingCharacteristicPointsInSpace(points, 0.001);
 	const Groups = groupedOutput[0];
 	const Grid = groupedOutput[1];
@@ -54,17 +55,17 @@ async function loadAndComputeCSV(filePath: string) {
 	console.log('Voronoi points created');
 	// ----- Dividing Trajectories into Segments
 
-	const segmentedTrajectories = segmentTrajectories(Object.values(trajectories), voronoiPoints);
+	const segmentedTrajectories = segmentTrajectories([...trajectories.values()], voronoiPoints);
 	console.log(`Segmented trajectories: ${segmentedTrajectories.length}`);
 	console.log('Trajectories segmented');
 	// ----- Aggregation of data
 
 	const aggregatedVisits = aggregateVisits(segmentedTrajectories, voronoiPoints);
-	const aggregatedMoves = aggregateMoves(segmentedTrajectories, voronoiPoints, aggregatedVisits);
 	console.log(`Aggregated visits: ${aggregatedVisits.length}`);
+	const aggregatedMoves = aggregateMoves(segmentedTrajectories, voronoiPoints, aggregatedVisits);
 	console.log(`Aggregated moves: ${aggregatedMoves.length}`);
 	console.log('Data aggregated');
 	// -----
 }
 
-loadAndComputeCSV('./data/SmallMilanoData.csv');
+loadAndComputeCSV('./data/MilanoData.csv');

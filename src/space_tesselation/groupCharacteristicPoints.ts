@@ -126,7 +126,7 @@ function redistributePoints(points: Point[], set: Group[], grid: Grid) {
 	}
 }
 
-//maxRadius in meters
+
 export function groupingCharacteristicPointsInSpace(points: Point[], maxRadius: number): any {
 	let bb: BoundingBox = { min: { x: points[0].x, y: points[0].y }, max: { x: points[0].x, y: points[0].y } };
 	for (let i = 0; i < points.length; i++) {

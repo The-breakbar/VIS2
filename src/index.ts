@@ -120,7 +120,7 @@ window.addEventListener('resize', () => {
 	screenSize.width = document.getElementById('voronoi')!.clientWidth;
 	screenSize.height = document.getElementById('voronoi')!.clientHeight;
 
-	svg.remove();
+	svg.attr('width', screenSize.width).attr('height', screenSize.height);
 
 	draw();
 });

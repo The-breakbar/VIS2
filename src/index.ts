@@ -1,17 +1,19 @@
 import * as d3 from 'd3';
 
+import './style.css';
+
 import { loadAndComputeCSV } from './space_tesselation/spaceIndex';
 import { BoundingBox, Point, ScreenSize } from './interfaces';
 import { Delaunay } from 'd3';
 
 const screenSize: ScreenSize = {
-	width: window.innerWidth,
-	height: window.innerHeight
+	width: document.getElementById('voronoi')!.clientWidth,
+	height: document.getElementById('voronoi')!.clientHeight
 };
 
 const data = await loadAndComputeCSV({
 	filePath: './data/SmallMilanoData.csv',
-	maxRadius: 2500
+	maxRadius: 10000
 });
 
 // define a function that scales the data the screen size with the bounding box
@@ -22,7 +24,7 @@ function scalePointToScreen(point: Point, screenSize: ScreenSize, boundingBox: B
 	};
 }
 
-let svg = d3.select('body').append('svg').attr('width', screenSize.width).attr('height', screenSize.height);
+let svg = d3.select('#voronoi').append('svg').attr('width', screenSize.width).attr('height', screenSize.height);
 
 function draw() {
 	const delaunay = Delaunay.from(
@@ -59,12 +61,12 @@ draw();
 
 // draw on resize
 window.addEventListener('resize', () => {
-	screenSize.width = window.innerWidth;
-	screenSize.height = window.innerHeight;
+	screenSize.width = document.getElementById('voronoi')!.clientWidth;
+	screenSize.height = document.getElementById('voronoi')!.clientHeight;
 
 	// create new svg
 	svg.remove();
-	svg = d3.select('body').append('svg').attr('width', screenSize.width).attr('height', screenSize.height);
+	svg = d3.select('#voronoi').append('svg').attr('width', screenSize.width).attr('height', screenSize.height);
 
 	draw();
 });

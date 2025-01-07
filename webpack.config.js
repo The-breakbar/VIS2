@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
 	mode: 'development',
@@ -16,7 +17,7 @@ module.exports = {
 			},
 			{
 				test: /\.css$/i,
-				use: 'asset/resource'
+				use: [MiniCssExtractPlugin.loader, 'css-loader']
 			},
 			{
 				test: /\.csv$/,
@@ -35,16 +36,14 @@ module.exports = {
 			template: './src/index.html'
 		}),
 		new CopyPlugin({
-			patterns: [
-				{ from: 'data', to: 'data' },
-				{ from: './src/css', to: 'css' }
-			]
+			patterns: [{ from: 'data', to: 'data' }]
 		}),
 		new webpack.SourceMapDevToolPlugin({
 			filename: '[file].map',
 			fallbackModuleFilenameTemplate: '[absolute-resource-path]',
 			moduleFilenameTemplate: '[absolute-resource-path]'
-		})
+		}),
+		new MiniCssExtractPlugin()
 	],
 	output: {
 		filename: 'bundle.js',

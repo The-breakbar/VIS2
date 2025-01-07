@@ -16,6 +16,8 @@
 	"dependencies": {
 		"@types/d3": "^7.4.3",
 		"d3": "^7.9.0",
-		"fs": "^0.0.1-security"
+		"fs": "^0.0.1-security",
+		"numjs": "^0.16.1",
+		"tsne-js": "^1.0.3"
 	}
 }

@@ -2,12 +2,14 @@ import { Group, Grid, Point, VoronoiCell } from './../interfaces';
 import { spatialDistance } from './groupCharacteristicPoints';
 
 function addExtraPoints(centers: Point[], grid: Grid): Point[] {
-	const start: Point = { x: grid.boundingBox.min.x - grid.cellSize * 3, y: grid.boundingBox.min.y - grid.cellSize * 3 };
-	const end: Point = { x: grid.boundingBox.max.x + grid.cellSize * 3, y: grid.boundingBox.max.y + grid.cellSize * 3 };
+	const cellSize = grid.cellSize / 111000; // From meters to degrees approx
+
+	const start: Point = { x: grid.boundingBox.min.x - cellSize * 3, y: grid.boundingBox.min.y - cellSize * 3 };
+	const end: Point = { x: grid.boundingBox.max.x + cellSize * 3, y: grid.boundingBox.max.y + cellSize * 3 };
 
 	const voronoiPoints: Point[] = [];
-	for (let x = start.x; x <= end.x; x += grid.cellSize) {
-		for (let y = start.y; y <= end.y; y += grid.cellSize) {
+	for (let x = start.x; x <= end.x; x += cellSize) {
+		for (let y = start.y; y <= end.y; y += cellSize) {
 			const point: Point = { x, y };
 			if (!checkIfRealCentroidIsNerby(centers, point, grid.cellSize)) {
 				voronoiPoints.push(point);

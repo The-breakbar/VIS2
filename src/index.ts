@@ -13,18 +13,64 @@ const screenSize: ScreenSize = {
 
 const data = await loadAndComputeCSV({
 	filePath: './data/SmallMilanoData.csv',
-	maxRadius: 10000
+	maxRadius: 2500
 });
 
-// define a function that scales the data the screen size with the bounding box
+function equiRectangularProjection(point: Point, boundingBox: BoundingBox): Point {
+	// x = r λ cos(φ0)
+	// y = r φ
+
+	const centerLat = (boundingBox.max.y + boundingBox.min.y) / 2;
+	const x = point.x * Math.cos(centerLat);
+	const y = point.y;
+
+	return { x, y };
+}
+
+// scales the data to the screen size with the bounding box
 function scalePointToScreen(point: Point, screenSize: ScreenSize, boundingBox: BoundingBox): Point {
-	return {
-		x: ((point.x - boundingBox.min.x) / (boundingBox.max.x - boundingBox.min.x)) * screenSize.width,
-		y: ((point.y - boundingBox.min.y) / (boundingBox.max.y - boundingBox.min.y)) * screenSize.height
+	const projectedPoint = equiRectangularProjection(point, boundingBox);
+	const projectedBounds = {
+		min: equiRectangularProjection(boundingBox.min, boundingBox),
+		max: equiRectangularProjection(boundingBox.max, boundingBox)
 	};
+
+	const xDiff = projectedBounds.max.x - projectedBounds.min.x;
+	const yDiff = projectedBounds.max.y - projectedBounds.min.y;
+	let diagramAspectRatio = xDiff / yDiff;
+	let screenAspectRatio = screenSize.width / screenSize.height;
+
+	let normalizedX = (projectedPoint.x - projectedBounds.min.x) / xDiff;
+	let normalizedY = (projectedPoint.y - projectedBounds.min.y) / yDiff;
+
+	let x, y;
+	if (diagramAspectRatio > screenAspectRatio) {
+		// diagram is wider than screen
+		const height = screenSize.width / diagramAspectRatio;
+
+		x = normalizedX * screenSize.width;
+		y = normalizedY * height + (screenSize.height - height) / 2;
+	} else {
+		// diagram is taller than screen
+		const width = screenSize.height * diagramAspectRatio;
+
+		x = normalizedX * width + (screenSize.width - width) / 2;
+		y = normalizedY * screenSize.height;
+	}
+
+	return { x, y };
 }
 
 let svg = d3.select('#voronoi').append('svg').attr('width', screenSize.width).attr('height', screenSize.height);
+let lineGroup = svg.append('g');
+let pointGroup = svg.append('g');
+
+const zoom = d3.zoom().on('zoom', (e) => {
+	lineGroup.attr('transform', e.transform);
+	pointGroup.attr('transform', e.transform);
+}) as any;
+
+svg.call(zoom).call(zoom.transform, d3.zoomIdentity);
 
 function draw() {
 	const delaunay = Delaunay.from(
@@ -36,7 +82,7 @@ function draw() {
 	const voronoi = delaunay.voronoi([0, 0, screenSize.width, screenSize.height]);
 
 	// draw the voronoi diagram
-	svg.append('g')
+	let lines = lineGroup
 		.selectAll('path')
 		.data(voronoi.cellPolygons())
 		.enter()
@@ -45,8 +91,10 @@ function draw() {
 		.attr('fill', 'none')
 		.attr('stroke', 'black');
 
+	lines.exit().remove();
+
 	// draw the voronoi points
-	svg.append('g')
+	let points = pointGroup
 		.selectAll('circle')
 		.data(data.voronoiPoints)
 		.enter()
@@ -55,6 +103,8 @@ function draw() {
 		.attr('cy', (d) => scalePointToScreen(d.center, screenSize, data.boundingBox).y)
 		.attr('r', 2)
 		.attr('fill', 'black');
+
+	points.exit().remove();
 }
 
 draw();
@@ -64,9 +114,7 @@ window.addEventListener('resize', () => {
 	screenSize.width = document.getElementById('voronoi')!.clientWidth;
 	screenSize.height = document.getElementById('voronoi')!.clientHeight;
 
-	// create new svg
 	svg.remove();
-	svg = d3.select('#voronoi').append('svg').attr('width', screenSize.width).attr('height', screenSize.height);
 
 	draw();
 });

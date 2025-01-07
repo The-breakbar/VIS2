@@ -126,8 +126,8 @@ function redistributePoints(points: Point[], set: Group[], grid: Grid) {
 	}
 }
 
-
-export function groupingCharacteristicPointsInSpace(points: Point[], maxRadius: number): any {
+//maxRadius in meters
+export function groupingCharacteristicPointsInSpace(points: Point[], maxRadius: number): [Group[], Grid, BoundingBox] {
 	let bb: BoundingBox = { min: { x: points[0].x, y: points[0].y }, max: { x: points[0].x, y: points[0].y } };
 	for (let i = 0; i < points.length; i++) {
 		if (points[i].x < bb.min.x) {
@@ -178,7 +178,7 @@ export function groupingCharacteristicPointsInSpace(points: Point[], maxRadius: 
 
 	redistributePoints(points, R, grid);
 
-	return [R, grid];
+	return [R, grid, bb];
 }
 
 //-----------------Optimization-----------------//

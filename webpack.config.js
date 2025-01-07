@@ -15,6 +15,10 @@ module.exports = {
 				exclude: /node_modules/
 			},
 			{
+				test: /\.css$/i,
+				use: 'asset/resource'
+			},
+			{
 				test: /\.csv$/,
 				use: 'asset/resource'
 			}
@@ -31,7 +35,10 @@ module.exports = {
 			template: './src/index.html'
 		}),
 		new CopyPlugin({
-			patterns: [{ from: 'data', to: 'data' }]
+			patterns: [
+				{ from: 'data', to: 'data' },
+				{ from: './src/css', to: 'css' }
+			]
 		}),
 		new webpack.SourceMapDevToolPlugin({
 			filename: '[file].map',

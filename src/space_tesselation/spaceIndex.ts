@@ -7,14 +7,14 @@ import { segmentTrajectories } from './dividingTrajectoriesIntoSegments';
 import { aggregateMoves, aggregateVisits } from './aggregationOfData';
 import { extractMovementIntoOneArray, movementToPoints } from './../tools';
 
-import { SpaceTesselation } from '../interfaces';
+import { SpaceTesselation, TesselationConfig } from '../interfaces';
 
-export async function loadAndComputeCSV(filePath: string): Promise<SpaceTesselation> {
+export async function loadAndComputeCSV(config: TesselationConfig): Promise<SpaceTesselation> {
 	let startTime = new Date();
 	let lastTime = new Date();
 	console.log('Loading CSV data...');
-	const csv = await readCSVasJSON(filePath);
-	console.log(`CSV file loaded and computed: ${filePath}`);
+	const csv = await readCSVasJSON(config.filePath);
+	console.log(`CSV file loaded and computed: ${config.filePath}`);
 	console.log(csv.length);
 	console.log('CSV data loaded');
 	let newTime = new Date();
@@ -50,11 +50,9 @@ export async function loadAndComputeCSV(filePath: string): Promise<SpaceTesselat
 	lastTime = newTime;
 	// ----- Grouping Characteristic Points in Space
 
-	const groupedOutput = groupingCharacteristicPointsInSpace(points, 300);
-	const Groups = groupedOutput[0];
-	const Grid = groupedOutput[1];
+	const [Groups, Grid, boundingBox] = groupingCharacteristicPointsInSpace(points, config.maxRadius);
 	console.log(`Groups: ${Groups.length}`);
-	console.log(`Grid: ${Grid.length}`);
+	console.log(`Grid: ${Grid.gridSizeX} x ${Grid.gridSizeY}`);
 	console.log('Characteristic points grouped');
 	newTime = new Date();
 	console.log(`Time taken: ${(newTime.getTime() - lastTime.getTime()) / 1000} sek`);
@@ -105,6 +103,7 @@ export async function loadAndComputeCSV(filePath: string): Promise<SpaceTesselat
 		segementedTrajectories: segmentedTrajectories,
 		voronoiPoints: voronoiPoints,
 		aggregatedVisits: aggregatedVisits,
-		aggregatedMoves: aggregatedMoves
+		aggregatedMoves: aggregatedMoves,
+		boundingBox: boundingBox
 	};
 }

@@ -121,4 +121,15 @@ export interface SpaceTesselation {
 	aggregatedVisits: VoronoiCellStatistics[];
 	aggregatedMoves: VoronoiCellPairStatistics[];
 	segementedTrajectories: TrajectoryAdvanced[];
+	boundingBox: BoundingBox;
+}
+
+export interface TesselationConfig {
+	filePath: string;
+	maxRadius: number;
+}
+
+export interface ScreenSize {
+	width: number;
+	height: number;
 }

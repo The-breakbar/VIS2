@@ -1,4 +1,4 @@
-import TSNE from 'tsne-js';
+const TSNE = require('tsne-js');
 import { TSNEConfig } from './interfaces';
 
 export function tsne(data: number[][], config: TSNEConfig): any {

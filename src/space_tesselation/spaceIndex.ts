@@ -102,6 +102,7 @@ export async function loadAndComputeCSV(config: TesselationConfig): Promise<Spac
 	return {
 		segementedTrajectories: segmentedTrajectories,
 		voronoiPoints: voronoiPoints,
+		realVornonoiPoints: optimizedGroups.length,
 		aggregatedVisits: aggregatedVisits,
 		aggregatedMoves: aggregatedMoves,
 		boundingBox: boundingBox

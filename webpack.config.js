@@ -29,7 +29,10 @@ module.exports = {
 		static: './dist'
 	},
 	resolve: {
-		extensions: ['.tsx', '.ts', '.js']
+		extensions: ['.tsx', '.ts', '.js'],
+		fallback: {
+			path: false
+		}
 	},
 	plugins: [
 		new HtmlWebpackPlugin({

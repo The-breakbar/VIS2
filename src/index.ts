@@ -3,12 +3,24 @@ import * as d3 from 'd3';
 import './style.css';
 
 import { loadAndComputeCSV } from './space_tesselation/spaceIndex';
+import { reduceDimensions } from './dimReduction';
 import { BoundingBox, Point, ScreenSize } from './interfaces';
 import { Delaunay } from 'd3';
 
 const screenSize: ScreenSize = {
 	width: document.getElementById('voronoi')!.clientWidth,
 	height: document.getElementById('voronoi')!.clientHeight
+};
+
+const NMF_TOPICS = 21;
+const NMF_ITERATIONS = 11;
+const TSNE_CONFIG = {
+	dim: 2,
+	perplexity: 30.0,
+	earlyExaggeration: 4.0,
+	learningRate: 100.0,
+	nIter: 500,
+	metric: 'euclidean'
 };
 
 const data = await loadAndComputeCSV({
@@ -21,6 +33,8 @@ const data = await loadAndComputeCSV({
 		maxDistance: 2500 //Meters
 	}
 });
+
+let visualize = reduceDimensions(data.segementedTrajectories, data.realVornonoiPoints, NMF_TOPICS, NMF_ITERATIONS, TSNE_CONFIG);
 
 function equiRectangularProjection(point: Point, boundingBox: BoundingBox): Point {
 	// x = r λ cos(φ0)

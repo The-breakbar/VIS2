@@ -118,6 +118,7 @@ export interface StatisticInterface {
 
 export interface SpaceTesselation {
 	voronoiPoints: VoronoiCell[];
+	realVornonoiPoints: number;
 	aggregatedVisits: VoronoiCellStatistics[];
 	aggregatedMoves: VoronoiCellPairStatistics[];
 	segementedTrajectories: TrajectoryAdvanced[];

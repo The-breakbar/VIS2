@@ -4,7 +4,7 @@ import { tsne } from './tsne';
 import * as nj from 'numjs';
 
 export function reduceDimensions(trajectories: TrajectoryAdvanced[], noOfVocabs: number, noOfTopics: number, maxNMFIter: number, tsneConfig: TSNEConfig): any {
-	let data: nj.NdArray = nj.zeros([trajectories.length, noOfVocabs]);
+	let data: nj.NdArray = nj.ones([trajectories.length, noOfVocabs]);
 
 	for (let i = 0; i < trajectories.length; i++) {
 		const currTraj = trajectories[i];
@@ -16,10 +16,10 @@ export function reduceDimensions(trajectories: TrajectoryAdvanced[], noOfVocabs:
 
 	let [W, H] = applyNMF(data, noOfTopics, maxNMFIter);
 
-	let TSNE_from_W = applyTSNE(W.tolist(), tsneConfig);
+	// let TSNE_from_W = applyTSNE(W.tolist(), tsneConfig);
 	let TSNE_FROM_H = applyTSNE(H.tolist(), tsneConfig);
 
-	return [TSNE_from_W, TSNE_FROM_H];
+	return TSNE_FROM_H;
 }
 
 export function applyNMF(data: nj.NdArray, noOfTopics: number, maxNMFIter: number) {

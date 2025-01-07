@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 
 module.exports = {
 	mode: 'development',
@@ -29,10 +30,7 @@ module.exports = {
 		static: './dist'
 	},
 	resolve: {
-		extensions: ['.tsx', '.ts', '.js'],
-		fallback: {
-			path: false
-		}
+		extensions: ['.tsx', '.ts', '.js']
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
@@ -46,7 +44,8 @@ module.exports = {
 			fallbackModuleFilenameTemplate: '[absolute-resource-path]',
 			moduleFilenameTemplate: '[absolute-resource-path]'
 		}),
-		new MiniCssExtractPlugin()
+		new MiniCssExtractPlugin(),
+		new NodePolyfillPlugin()
 	],
 	output: {
 		filename: 'bundle.js',

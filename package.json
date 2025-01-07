@@ -1,13 +1,15 @@
 {
 	"scripts": {
 		"build": "webpack",
-		"serve": "webpack serve"
+		"serve": "webpack serve",
+		"build-prod": "webpack --mode production"
 	},
 	"devDependencies": {
 		"copy-webpack-plugin": "^12.0.2",
 		"css-loader": "^7.1.2",
 		"html-webpack-plugin": "^5.6.3",
 		"mini-css-extract-plugin": "^2.9.2",
+		"node-polyfill-webpack-plugin": "^4.1.0",
 		"ts-loader": "^9.5.1",
 		"webpack": "^5.97.1",
 		"webpack-cli": "^6.0.1",

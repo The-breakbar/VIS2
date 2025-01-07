@@ -34,7 +34,7 @@ const data = await loadAndComputeCSV({
 	}
 });
 
-let visualize = reduceDimensions(data.segementedTrajectories, data.realVornonoiPoints, NMF_TOPICS, NMF_ITERATIONS, TSNE_CONFIG);
+//let visualize = reduceDimensions(data.segementedTrajectories, data.realVornonoiPoints, NMF_TOPICS, NMF_ITERATIONS, TSNE_CONFIG);
 
 function equiRectangularProjection(point: Point, boundingBox: BoundingBox): Point {
 	// x = r λ cos(φ0)

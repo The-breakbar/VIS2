@@ -18,20 +18,21 @@ body {
 }
 
 #overlay {
-	width: 300px;
 	z-index: 10;
 	position: fixed;
-	right: 40px;
-	bottom: 40px;
+	right: 0px;
+	bottom: 0px;
 }
 
 .overlay-box {
+	width: 250px;
 	background: rgb(221, 221, 221);
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 
 	border: 1px solid rgba(0, 0, 0, 0.2);
 	border-radius: 10px;
 	padding: 20px;
+	margin: 40px;
 
 	input {
 		margin: 5px 0px;

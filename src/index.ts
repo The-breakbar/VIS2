@@ -5,7 +5,7 @@ import './style.css';
 import { loadAndComputeCSV } from './space_tesselation/spaceIndex';
 import { reduceDimensions } from './dimensionality/dimReduction';
 import { draw, initializeDiagram } from './visualization/draw';
-import { getInputConfig } from './visualization/ui';
+import { getInputConfig, updateUIAfterComputation } from './visualization/ui';
 
 const defaultTessConfig = {
 	filePath: './data/MilanoData.csv',
@@ -35,7 +35,8 @@ document.getElementById('compute')!.addEventListener('click', async () => {
 	const [tessConfig, dimConfig] = getInputConfig(defaultTessConfig, defaultDimConfig);
 
 	const data = await loadAndComputeCSV(tessConfig);
-	(document.getElementById('compute') as HTMLButtonElement).textContent = 'Finished';
+	updateUIAfterComputation(data);
+
 	const topicData = reduceDimensions(data.segementedTrajectories, data.realVornonoiPoints, dimConfig);
 
 	const diagram = initializeDiagram({

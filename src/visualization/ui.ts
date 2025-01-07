@@ -1,4 +1,4 @@
-import { DimensionConfig, TesselationConfig } from '../interfaces';
+import { DimensionConfig, SpaceTesselation, TesselationConfig } from '../interfaces';
 
 export function getInputConfig(defaultTessConfig: TesselationConfig, defaultDimConfig: DimensionConfig): [TesselationConfig, DimensionConfig] {
 	const milanoRadio = document.getElementById('milano') as HTMLInputElement;
@@ -29,4 +29,17 @@ export function getInputConfig(defaultTessConfig: TesselationConfig, defaultDimC
 	computeButton.textContent = 'Computing...';
 
 	return [defaultTessConfig, defaultDimConfig];
+}
+
+export function updateUIAfterComputation(data: SpaceTesselation) {
+	(document.getElementById('compute') as HTMLButtonElement).textContent = 'Finished';
+
+	let statText = [];
+	statText.push(`Number of voronoi points: ${data.realVornonoiPoints}`);
+	statText.push(`Number of moves: ${data.aggregatedMoves.length}`);
+	statText.push(`Number of trajectories: ${data.segementedTrajectories.length}`);
+
+	const stats = document.getElementById('stats-text') as HTMLDivElement;
+	stats.innerHTML = statText.join('<br>');
+	document.getElementById('stats')!.hidden = false;
 }

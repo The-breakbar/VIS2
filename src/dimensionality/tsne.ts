@@ -1,5 +1,5 @@
 const TSNE = require('tsne-js');
-import { TSNEConfig } from './interfaces';
+import { TSNEConfig } from '../interfaces';
 
 export function tsne(data: number[][], config: TSNEConfig): any {
 	let model = new TSNE(config);

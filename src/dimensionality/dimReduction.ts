@@ -1,9 +1,10 @@
-import { TrajectoryAdvanced, TSNEConfig } from './interfaces';
+import { DimensionConfig, TopicData, TrajectoryAdvanced, TSNEConfig } from '../interfaces';
+import { convertTopicColors } from './topicColors';
 import { nmf } from './nmf';
 import { tsne } from './tsne';
 import * as nj from 'numjs';
 
-export function reduceDimensions(trajectories: TrajectoryAdvanced[], noOfVocabs: number, noOfTopics: number, maxNMFIter: number, tsneConfig: TSNEConfig): any {
+export function reduceDimensions(trajectories: TrajectoryAdvanced[], noOfVocabs: number, config: DimensionConfig): TopicData {
 	let data: nj.NdArray = nj.ones([trajectories.length, noOfVocabs]);
 
 	for (let i = 0; i < trajectories.length; i++) {
@@ -14,12 +15,12 @@ export function reduceDimensions(trajectories: TrajectoryAdvanced[], noOfVocabs:
 		}
 	}
 
-	let [W, H] = applyNMF(data, noOfTopics, maxNMFIter);
+	let [W, H] = applyNMF(data, config.nmfTopics, config.nmfIterations);
 
 	// let TSNE_from_W = applyTSNE(W.tolist(), tsneConfig);
-	let TSNE_FROM_H = applyTSNE(H.tolist(), tsneConfig);
+	let TSNE_FROM_H = applyTSNE(H.tolist(), config.tsneConfig);
 
-	return TSNE_FROM_H;
+	return { topics: H.tolist(), topicColors: convertTopicColors(TSNE_FROM_H[1]) };
 }
 
 export function applyNMF(data: nj.NdArray, noOfTopics: number, maxNMFIter: number) {

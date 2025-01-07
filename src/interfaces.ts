@@ -144,3 +144,21 @@ export interface TSNEConfig {
 	nIter: number;
 	metric: string;
 }
+
+export interface DimensionConfig {
+	nmfTopics: number;
+	nmfIterations: number;
+	tsneConfig: TSNEConfig;
+}
+
+export interface DiagramElement {
+	svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, any>;
+	lineGroup: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
+	pointGroup: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
+	size: ScreenSize;
+}
+
+export interface TopicData {
+	topics: number[][];
+	topicColors: d3.Color[];
+}

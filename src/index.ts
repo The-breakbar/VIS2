@@ -5,9 +5,10 @@ import './style.css';
 import { loadAndComputeCSV } from './space_tesselation/spaceIndex';
 import { reduceDimensions } from './dimensionality/dimReduction';
 import { draw, initializeDiagram } from './visualization/draw';
+import { getInputConfig } from './visualization/ui';
 
-const data = await loadAndComputeCSV({
-	filePath: './data/SmallMilanoData.csv',
+const defaultTessConfig = {
+	filePath: './data/MilanoData.csv',
 	maxRadius: 2500,
 	characteristicPointParams: {
 		minAngle: 30, //Degrees
@@ -15,11 +16,11 @@ const data = await loadAndComputeCSV({
 		minDistance: 250, //Meters
 		maxDistance: 2500 //Meters
 	}
-});
+};
 
-const topicData = reduceDimensions(data.segementedTrajectories, data.realVornonoiPoints, {
-	nmfTopics: 21,
-	nmfIterations: 11,
+const defaultDimConfig = {
+	numTopics: 20,
+	numIterations: 11,
 	tsneConfig: {
 		dim: 2,
 		perplexity: 30.0,
@@ -28,20 +29,28 @@ const topicData = reduceDimensions(data.segementedTrajectories, data.realVornono
 		nIter: 500,
 		metric: 'euclidean'
 	}
-});
+};
 
-const diagram = initializeDiagram({
-	width: document.getElementById('voronoi')!.clientWidth,
-	height: document.getElementById('voronoi')!.clientHeight
-});
-draw(diagram, data, topicData);
+document.getElementById('compute')!.addEventListener('click', async () => {
+	const [tessConfig, dimConfig] = getInputConfig(defaultTessConfig, defaultDimConfig);
 
-// set drawback for draw on resize
-window.addEventListener('resize', () => {
-	diagram.size.width = document.getElementById('voronoi')!.clientWidth;
-	diagram.size.height = document.getElementById('voronoi')!.clientHeight;
+	const data = await loadAndComputeCSV(tessConfig);
+	(document.getElementById('compute') as HTMLButtonElement).textContent = 'Finished';
+	const topicData = reduceDimensions(data.segementedTrajectories, data.realVornonoiPoints, dimConfig);
 
-	diagram.svg.attr('width', diagram.size.width).attr('height', diagram.size.height);
-
+	const diagram = initializeDiagram({
+		width: document.getElementById('voronoi')!.clientWidth,
+		height: document.getElementById('voronoi')!.clientHeight
+	});
 	draw(diagram, data, topicData);
+
+	// set drawback for draw on resize
+	window.addEventListener('resize', () => {
+		diagram.size.width = document.getElementById('voronoi')!.clientWidth;
+		diagram.size.height = document.getElementById('voronoi')!.clientHeight;
+
+		diagram.svg.attr('width', diagram.size.width).attr('height', diagram.size.height);
+
+		draw(diagram, data, topicData);
+	});
 });

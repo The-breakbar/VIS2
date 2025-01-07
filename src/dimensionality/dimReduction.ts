@@ -15,7 +15,7 @@ export function reduceDimensions(trajectories: TrajectoryAdvanced[], noOfVocabs:
 		}
 	}
 
-	let [W, H] = applyNMF(data, config.nmfTopics, config.nmfIterations);
+	let [W, H] = applyNMF(data, config.numTopics, config.numIterations);
 
 	// let TSNE_from_W = applyTSNE(W.tolist(), tsneConfig);
 	let TSNE_FROM_H = applyTSNE(H.tolist(), config.tsneConfig);

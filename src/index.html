@@ -1,9 +1,34 @@
 <!DOCTYPE html>
 <html>
-	<head></head>
+	<head> </head>
 	<body>
 		<div id="full-screen">
 			<div id="voronoi"></div>
+			<div id="overlay">
+				<div id="input" class="overlay-box">
+					<h2>Input</h2>
+					<input type="radio" id="milano" name="input" value="milano" checked />
+					<label for="milano">Milano Dataset</label><br />
+
+					<input type="radio" id="smallmilano" name="input" value="smallmilano" />
+					<label for="smallmilano">Small Milano Dataset</label><br />
+
+					<input type="radio" id="custom" name="input" value="custom" />
+					<label for="custom">
+						Custom Dataset
+						<input type="file" id="file" name="file" accept=".csv" /> </label
+					><br />
+
+					<h2>Config</h2>
+					<label for="max-radius">Max Radius (m)</label>
+					<input type="number" id="max-radius" name="max-radius" value="2500" min="10" max="100000" /><br />
+
+					<label for="num-topics">Number of Topics</label>
+					<input type="number" id="num-topics" name="num-topics" value="20" min="1" max="100" /><br />
+
+					<button id="compute">Compute</button>
+				</div>
+			</div>
 		</div>
 	</body>
 </html>

@@ -146,8 +146,8 @@ export interface TSNEConfig {
 }
 
 export interface DimensionConfig {
-	nmfTopics: number;
-	nmfIterations: number;
+	numTopics: number;
+	numIterations: number;
 	tsneConfig: TSNEConfig;
 }
 

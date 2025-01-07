@@ -13,7 +13,13 @@ const screenSize: ScreenSize = {
 
 const data = await loadAndComputeCSV({
 	filePath: './data/SmallMilanoData.csv',
-	maxRadius: 2500
+	maxRadius: 2500,
+	characteristicPointParams: {
+		minAngle: 30, //Degrees
+		minStopDuration: 300 * 1000, //Seconds times milliseconds
+		minDistance: 250, //Meters
+		maxDistance: 2500 //Meters
+	}
 });
 
 function equiRectangularProjection(point: Point, boundingBox: BoundingBox): Point {

@@ -127,6 +127,7 @@ export interface SpaceTesselation {
 export interface TesselationConfig {
 	filePath: string;
 	maxRadius: number;
+	characteristicPointParams: CharacteristicPointParams;
 }
 
 export interface ScreenSize {

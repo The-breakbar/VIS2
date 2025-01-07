@@ -122,14 +122,9 @@ function extractCharacteristicPointsOfATrajectory(trajectory: Trajectory, params
 	return C;
 }
 
-export function extractCharisticPointsFromAllTrajectories(trajectories: Map<string, Trajectory>): Map<string, Movement[]> {
+export function extractCharisticPointsFromAllTrajectories(trajectories: Map<string, Trajectory>, params: CharacteristicPointParams): Map<string, Movement[]> {
 	const characteristicPoints = new Map<string, Movement[]>();
-	const params: CharacteristicPointParams = {
-		minAngle: 30, //Degrees
-		minStopDuration: 300 * 1000, //Seconds times milliseconds
-		minDistance: 250, //Meters
-		maxDistance: 2500 //Meters
-	};
+
 	//TODO: FIX adjust params
 	for (const [key] of trajectories) {
 		if (characteristicPoints.has(key)) throw new Error('Duplicate key in trajectories');

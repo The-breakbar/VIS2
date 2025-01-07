@@ -31,7 +31,7 @@ export async function loadAndComputeCSV(config: TesselationConfig): Promise<Spac
 	lastTime = newTime;
 	// -----
 
-	const characteristicPoints = extractCharisticPointsFromAllTrajectories(trajectories);
+	const characteristicPoints = extractCharisticPointsFromAllTrajectories(trajectories, config.characteristicPointParams);
 	console.log(`Characteristic points: ${characteristicPoints.size}`);
 
 	console.log('Characteristic points extracted');

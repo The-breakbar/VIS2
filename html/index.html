@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Project Summary</title>
+	</head>
+	<body>
+		<section id="overview">
+			<h1>Overview</h1>
+			<p>
+				This project implements the paper "Extracting Movement-based Topics for Analysis of Space Use" by G. Andrienko, N. Andrienko, and D. Hecker. The project is
+				available at <a href="https://the-breakbar.github.io/VIS2/">https://the-breakbar.github.io/VIS2/</a>.
+			</p>
+		</section>
+
+		<section id="usage">
+			<h1>Usage</h1>
+			<p>
+				The purpose of this visualization method is to analyze spatio-temporal movement patterns using topic modeling. Using data which consists of points in space and time
+				(such as cars moving through a city), the data is embedded in a voronoi diagram. This is supposed to support the exploration of spatial and temporal patterns of
+				movement, enabling understanding of space use. However, whether this method can uncover such insights, depends on the data and the chosen parameters.
+			</p>
+			<p>
+				The data to be visualized has to be a .csv file in the form <code>"id","datetime","lat","lon"</code>. Two sample datasets are provided, a dataset of car movements
+				in Milan, and a smaller version of the same dataset. For the computation, two configuration variables are exposed: the maximum radius of voronoi cells and the
+				number of topics for topic modelling. We recommend default values of 2500m and 20 respectively. Computation time can range from 2 to 5 minutes, please be patient.
+			</p>
+		</section>
+
+		<section id="project">
+			<h1>Project</h1>
+			<p>
+				The source code is available at <a href="https://github.com/The-breakbar/VIS2">https://github.com/The-breakbar/VIS2</a>. The project itself is a static web page
+				built with d3.js, webpack and typescript. All computations are done on the client side.
+			</p>
+		</section>
+
+		<section id="sources">
+			<h1>Sources</h1>
+
+			<ul>
+				<li>
+					<a href="https://openaccess.city.ac.uk/id/eprint/31442/"> Extracting Movement-based Topics for Analysis of Space Use </a>
+				</li>
+				<li>
+					<a href="https://ckan-sobigdata.d4science.org/it/dataset/gps_track_milan_italy"> Milan Data Set </a>
+				</li>
+			</ul>
+		</section>
+	</body>
+</html>

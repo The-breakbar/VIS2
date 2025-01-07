@@ -1,6 +1,6 @@
 ## About
 
-Implementation of the paper "Extracting Movement-based Topics for Analysis of Space Use" by G. Andrienko, N. Andrienko, and D. Hecker. The project is available at [https://the-breakbar.github.io/VIS2/](https://the-breakbar.github.io/VIS2/).
+Implementation of the [paper](https://openaccess.city.ac.uk/id/eprint/31442/) "Extracting Movement-based Topics for Analysis of Space Use" by G. Andrienko, N. Andrienko, and D. Hecker. The project is available at [https://the-breakbar.github.io/VIS2/](https://the-breakbar.github.io/VIS2/).
 
 ## Build
 

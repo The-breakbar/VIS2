@@ -134,3 +134,12 @@ export interface ScreenSize {
 	width: number;
 	height: number;
 }
+
+export interface TSNEConfig {
+	dim: number;
+	perplexity: number;
+	earlyExaggeration: number;
+	learningRate: number;
+	nIter: number;
+	metric: string;
+}

@@ -1,6 +1,6 @@
 import * as nj from 'numjs';
 
-export function nmf(V: nj.NdArray, rank: number, maxIter: number, tol: number): [nj.NdArray, nj.NdArray] {
+export function nmf(V: nj.NdArray, rank: number, maxIter: number): [nj.NdArray, nj.NdArray] {
 	const [row, col] = V.shape;
 
 	let W = nj.random([row, rank]);

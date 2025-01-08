@@ -17,14 +17,27 @@
 		<section id="usage">
 			<h1>Usage</h1>
 			<p>
-				The purpose of this visualization method is to analyze spatio-temporal movement patterns using topic modeling. Using data which consists of points in space and time
-				(such as cars moving through a city), the data is embedded in a voronoi diagram. This is supposed to support the exploration of spatial and temporal patterns of
-				movement, enabling understanding of space use. However, whether this method can uncover such insights, depends on the data and the chosen parameters.
+				The purpose of this visualization method is to analyze spatio-temporal movement patterns with the method of topic modeling. Using data which consists of points in
+				space and time (such as cars moving through a city), the data is embedded in a voronoi diagram. This is supposed to support the exploration of spatial and temporal
+				patterns of movement, enabling understanding of space use. However, whether this method can uncover such insights, depends on the data and the chosen parameters.
 			</p>
 			<p>
 				The data to be visualized has to be a .csv file in the form <code>"id","datetime","lat","lon"</code>. Two sample datasets are provided, a dataset of car movements
-				in Milan, and a smaller version of the same dataset. For the computation, two configuration variables are exposed: the maximum radius of voronoi cells and the
-				number of topics for topic modelling. We recommend default values of 2500m and 20 respectively. Computation time can range from 2 to 5 minutes, please be patient.
+				in Milan, and a smaller version of the same dataset. For the computation, three configuration variables are exposed:
+
+				<ul>
+					<li>
+						<code>Max Radius</code>: The maximum radius of the voronoi cells. A larger radius results in larger cells, and vice versa. Increasing the radius will decrease the computation time.
+					</li>
+					<li>
+						<code>Number of Topics</code>: The number of topics for the topic modelling (aka the number of colors). A higher number will result in more topics (color), but reduces visual clarity. The optimal number highly depends on the data.
+					</li>
+					<li>
+						<code>NMF iterations</code>: The maximum number of iterations for the NMF algorithm. NMF is a random algorithm, so increasing the iterations will make the result more stable. Increasing the number of iterations will increase the computation time.
+					</li>
+				</ul>
+
+				Based on the paper, for the Milan dataset we recommend a radius of 2000m, 21 topics and 50 iterations (default configuration), which results in a clear result. Computation time can range from 1 to 5 minutes, please be patient.
 			</p>
 		</section>
 

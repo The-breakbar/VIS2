@@ -17,13 +17,13 @@ The project contains the following folders:
 
 The main entry point is `src/index.ts`. The general program flow is reading in the data, processing it and rendering it to the html, which are contained in subfolders.
 
-### dimensionality
-
-The dimensionality folder includes the uses of Non-negative Matrix Factorization (NMF) and Multidimensional scaling (MDS) algorithms. These methods are used for reducing the dimensions of the data, as referenced in the associated paper.
-
 ### space_tesselation
 
 See [Space Tesselation](space_tesselation.md).
+
+### dimensionality
+
+The dimensionality folder includes the uses of Non-negative Matrix Factorization (NMF) and Multidimensional scaling (MDS) algorithms. See `dimReduction.ts` for the main entry point. As stated in the paper, first our data is modelled as documents and vocabulary, then NMF is applied to get our desired amount of topics. To obtain the colors for our topics, MDS is performed on them and the resulting 2D coordinates are mapped to an appropriate color space. The resulting colors are then used to color the voronoi cells and pie charts.
 
 ### visualization
 

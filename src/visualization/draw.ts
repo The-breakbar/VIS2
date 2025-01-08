@@ -13,7 +13,7 @@ export function initializeDiagram(screenSize: ScreenSize): DiagramElement {
 		.scaleExtent([0.8, 12])
 		.translateExtent([
 			[0, 0],
-			[1.2 * screenSize.width, 1.2 * screenSize.height]
+			[1.5 * screenSize.width, 1.5 * screenSize.height]
 		])
 		.on('zoom', (e) => {
 			lineGroup.attr('transform', e.transform);

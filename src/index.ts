@@ -9,7 +9,7 @@ import { getInputConfig, updateUIAfterComputation } from './visualization/ui';
 
 const defaultTessConfig = {
 	filePath: './data/MilanoData.csv',
-	maxRadius: 1500,
+	maxRadius: 2000,
 	characteristicPointParams: {
 		minAngle: 30, //Degrees
 		minStopDuration: 300 * 1000, //Seconds times milliseconds

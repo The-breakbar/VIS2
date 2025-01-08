@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
-	<head> </head>
+	<head>
+		<link rel="stylesheet" href="style.css" />
+	</head>
 	<body>
 		<div id="full-screen">
 			<div id="voronoi"></div>
@@ -12,10 +14,10 @@
 				<div id="input" class="overlay-box">
 					<h2>Input</h2>
 					<input type="radio" id="milano" name="input" value="milano" checked />
-					<label for="milano">Milano Dataset</label><br />
+					<label for="milano">Milan Dataset (90 MB)<br />(~5 min to compute)</label><br />
 
 					<input type="radio" id="smallmilano" name="input" value="smallmilano" />
-					<label for="smallmilano">Small Milano Dataset</label><br />
+					<label for="smallmilano">Trimmed Milan Dataset (25 MB)<br />(~1 min, just for demo)</label><br />
 
 					<input type="radio" id="custom" name="input" value="custom" />
 					<label for="custom">
@@ -25,10 +27,13 @@
 
 					<h2>Config</h2>
 					<label for="max-radius">Max Radius (m)</label>
-					<input type="number" id="max-radius" name="max-radius" value="2500" min="10" max="100000" /><br />
+					<input type="number" id="max-radius" name="max-radius" value="2000" min="10" max="100000" /><br />
 
 					<label for="num-topics">Number of Topics</label>
-					<input type="number" id="num-topics" name="num-topics" value="20" min="1" max="100" /><br />
+					<input type="number" id="num-topics" name="num-topics" value="21" min="1" max="100" /><br />
+
+					<label for="nmf-iter">NMF iterations</label>
+					<input type="number" id="nmf-iter" name="nmf-iter" value="50" min="1" max="1000" /><br />
 
 					<button id="compute">Compute</button>
 				</div>

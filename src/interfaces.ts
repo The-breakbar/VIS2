@@ -147,7 +147,7 @@ export interface TSNEConfig {
 
 export interface DimensionConfig {
 	numTopics: number;
-	numIterations: number;
+	nmfIterations: number;
 	tsneConfig: TSNEConfig;
 }
 
@@ -160,5 +160,5 @@ export interface DiagramElement {
 
 export interface TopicData {
 	topics: number[][];
-	topicColors: d3.Color[];
+	topicColors: d3.RGBColor[];
 }

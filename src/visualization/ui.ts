@@ -24,6 +24,9 @@ export function getInputConfig(defaultTessConfig: TesselationConfig, defaultDimC
 	const numTopics = document.getElementById('num-topics') as HTMLInputElement;
 	defaultDimConfig.numTopics = Number(numTopics.value);
 
+	const nmfIterations = document.getElementById('nmf-iter') as HTMLInputElement;
+	defaultDimConfig.nmfIterations = Number(nmfIterations.value);
+
 	const computeButton = document.getElementById('compute') as HTMLButtonElement;
 	computeButton.disabled = true;
 	computeButton.textContent = 'Computing...';

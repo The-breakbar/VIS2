@@ -19,7 +19,7 @@ The main entry point is `src/index.ts`. The general program flow is reading in t
 
 ### dimensionality
 
-The dimensionality folder includes the uses of Non-negative Matrix Factorization (NMF) and t-Distributed Stochastic Neighbor Embedding (TSNE) algorithms. These methods are used for reducing the dimensions of the data, as referenced in the associated paper.
+The dimensionality folder includes the uses of Non-negative Matrix Factorization (NMF) and Multidimensional scaling (MDS) algorithms. These methods are used for reducing the dimensions of the data, as referenced in the associated paper.
 
 ### space_tesselation
 
